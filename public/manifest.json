@@ -1,25 +1,45 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "lang": "en",
+  "name": "Dynamic Gym Pondicherry",
+  "short_name": "Dynamic Gym",
+  "description": "Website to track the payment and attendance details of the Dynamic Gym Pondicherry users.",
+  "scope": "/",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#f69435",
+  "background_color": "#f69435",
+  "orientation": "any",
   "icons": [
+    {
+      "src": "maskable.png",
+      "sizes": "196x196",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
     {
       "src": "favicon.ico",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },
     {
-      "src": "logo192.png",
-      "type": "image/png",
-      "sizes": "192x192"
-    },
-    {
-      "src": "logo512.png",
-      "type": "image/png",
-      "sizes": "512x512"
-    }
-  ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+      "src": "/logo-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+  },
+  {
+      "src": "/logo-256x256.png",
+      "sizes": "256x256",
+      "type": "image/png"
+  },
+  {
+      "src": "/logo-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png"
+  },
+  {
+      "src": "/logo-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+  }
+  ]
 }
