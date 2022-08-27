@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 
 const themes = {
   dark: {
@@ -71,6 +71,3 @@ export const DarkModeContextProvider = ({ children }) => {
     </DarkModeContext.Provider>
   );
 };
-export function useDarkMode() {
-  return useContext(DarkModeContext);
-}

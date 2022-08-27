@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import { Checkbox, Form, Input, message } from "antd";
 import { MailOutlined, LockOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-import { useUserAuth } from "../../context/UserAuthContext";
-import { useDarkMode } from "../../context/DarkModeContext";
+import { useUserAuth } from "../../hooks/UseUserAuth";
+import { useDarkMode } from "../../hooks/UseDarkMode";
 import { FcGoogle } from "@react-icons/all-files/fc/FcGoogle";
 import { FcNext } from "@react-icons/all-files/fc/FcNext";
 

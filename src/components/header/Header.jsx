@@ -2,8 +2,8 @@ import React from "react";
 import { Layout, Typography } from "antd";
 import { BsBrightnessHighFill, BsBrightnessHigh } from "react-icons/bs";
 import { AiOutlineMenuUnfold, AiOutlineMenuFold } from "react-icons/ai";
-import { useUserAuth } from "../../context/UserAuthContext";
-import { useDarkMode } from "../../context/DarkModeContext";
+import { useUserAuth } from "../../hooks/UseUserAuth";
+import { useDarkMode } from "../../hooks/UseDarkMode";
 
 const Header = ({ collapsed, setCollapsed }) => {
   const { theme, toggleDarkMode, dark } = useDarkMode()

@@ -11,9 +11,10 @@ import {
 } from "@ant-design/icons";
 import { Link, useNavigate } from "react-router-dom";
 import { db } from "../../firebase-config";
-import { useUserAuth } from "../../context/UserAuthContext";
-import { useDarkMode } from "../../context/DarkModeContext";
+import { useUserAuth } from "../../hooks/UseUserAuth";
+import { useDarkMode } from "../../hooks/UseDarkMode";
 import ReadExcelData from "./ReadExcelData";
+import avatarIcon from "../../assets/avatar-icon.png"
 
 const ListUsers = () => {
   const [data, setData] = useState([]);
@@ -97,7 +98,18 @@ const ListUsers = () => {
       title: "Avatar",
       dataIndex: "gymboyAvatar",
       render: (record, record2) => (
-        <Avatar
+        record!==null || "" ? <Avatar
+        shape="square"
+        size={{
+          xs: 24,
+          sm: 32,
+          md: 40,
+          lg: 64,
+          xl: 80,
+          xxl: 100,
+        }}
+        src={avatarIcon}
+      /> : <Avatar
           shape="square"
           size={{
             xs: 24,
@@ -176,7 +188,7 @@ const ListUsers = () => {
           >
             <button
               type="button"
-              className="btn btn-sm btn-primary me-2 mb-sm-2"
+              className="btn btn-sm btn-primary me-2 mb-sm-1"
               onClick={() => {
                 navigate("edit", { state: { editableUser: record } });
               }}

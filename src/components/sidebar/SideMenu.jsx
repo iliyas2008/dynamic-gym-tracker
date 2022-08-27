@@ -1,8 +1,8 @@
 import React from 'react'
 import { Layout, Menu as AntMenu, } from 'antd';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useUserAuth } from "../../context/UserAuthContext";
-import { useDarkMode } from "../../context/DarkModeContext";
+import { useUserAuth } from "../../hooks/UseUserAuth";
+import { useDarkMode } from "../../hooks/UseDarkMode";
 
 import {
     UserOutlined,

@@ -1,6 +1,6 @@
 import React from "react";
 import { Layout } from "antd";
-import { useDarkMode } from "../../context/DarkModeContext"
+import { useDarkMode } from "../../hooks/UseDarkMode";
 
 const Footer = () => {
   const { theme } = useDarkMode();

@@ -5,8 +5,8 @@ import Footer from '../components/footer/Footer';
 import SideMenu from '../components/sidebar/SideMenu';
 import Header from '../components/header/Header';
 import { Outlet } from 'react-router-dom';
-import { useUserAuth } from '../context/UserAuthContext';
-import { useDarkMode } from '../context/DarkModeContext';
+import { useUserAuth } from "../hooks/UseUserAuth";
+import { useDarkMode } from "../hooks/UseDarkMode";
 
 const LayoutWithRoute = () => {
     const { Content } = Layout;

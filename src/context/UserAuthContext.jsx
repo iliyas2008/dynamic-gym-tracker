@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import {
   signInWithEmailAndPassword,
   onAuthStateChanged,
@@ -17,7 +17,7 @@ import {
 } from "firebase/firestore";
 import { ref, deleteObject } from "firebase/storage";
 
-const userAuthContext = createContext({});
+export const userAuthContext = createContext({});
 
 export function UserAuthContextProvider({ children }) {
   const [user, setUser] = useState({});
@@ -145,8 +145,4 @@ export function UserAuthContextProvider({ children }) {
       {children}
     </userAuthContext.Provider>
   );
-}
-
-export function useUserAuth() {
-  return useContext(userAuthContext);
 }

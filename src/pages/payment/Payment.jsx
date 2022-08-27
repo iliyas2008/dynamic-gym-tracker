@@ -7,8 +7,8 @@ import {
   EyeOutlined,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
-import { useUserAuth } from "../../context/UserAuthContext";
-import { useDarkMode } from "../../context/DarkModeContext";
+import { useUserAuth } from "../../hooks/UseUserAuth";
+import { useDarkMode } from "../../hooks/UseDarkMode";
 import moment from "moment";
 
 const { RangePicker } = DatePicker;

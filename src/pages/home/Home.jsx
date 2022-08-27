@@ -3,7 +3,7 @@ import { collection, onSnapshot } from "firebase/firestore";
 import { db } from "../../firebase-config";
 import { CloseOutlined } from "@ant-design/icons";
 import { daysUntilBirthday, getGreetingTime } from "../../utils/Utils";
-import { useDarkMode } from "../../context/DarkModeContext"
+import { useDarkMode } from "../../hooks/UseDarkMode";
 import moment from "moment";
 
 const Home = () => {

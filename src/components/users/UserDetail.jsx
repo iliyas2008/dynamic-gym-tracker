@@ -2,7 +2,7 @@ import { doc, getDoc } from "firebase/firestore";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useDarkMode } from "../../context/DarkModeContext";
+import { useDarkMode } from "../../hooks/UseDarkMode";
 import { db } from "../../firebase-config";
 
 const UserDetail = () => {

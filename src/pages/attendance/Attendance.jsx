@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useDarkMode } from "../../context/DarkModeContext";
+import { useDarkMode } from "../../hooks/UseDarkMode";
 
 const Attendance = () => {
   const { dark } = useDarkMode()

@@ -16,8 +16,8 @@ import { PlusOutlined } from "@ant-design/icons";
 import ImgCrop from "antd-img-crop";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage } from "../../firebase-config";
-import { useUserAuth } from "../../context/UserAuthContext";
-import { useDarkMode } from "../../context/DarkModeContext";
+import { useUserAuth } from "../../hooks/UseUserAuth";
+import { useDarkMode } from "../../hooks/UseDarkMode";
 import { useLocation, useNavigate } from "react-router-dom";
 import moment from "moment";
 
@@ -195,10 +195,10 @@ const AddEditUser = () => {
         onFinishFailed={onFinishFailed}
       >
         <div className="d-flex flex-column-reverse">
-          <div className="row me-3">
+          <div className="row align-items-center justify-content-between me-3">
             <Form.Item
               name="gymboyName"
-              className="col-12 col-sm-4 col-md-4 col-lg-4"
+              className="col-12 col-sm-4 col-md-4 col-lg-3 me-2"
               rules={[
                 {
                   required: true,
@@ -214,7 +214,7 @@ const AddEditUser = () => {
               <Input placeholder="Enter a Name !" />
             </Form.Item>
             <Form.Item
-              className="col-12 col-sm-4 col-md-4 col-lg-4"
+              className="col-12 col-sm-4 col-md-4 col-lg-3 me-2"
               name="gymboyAddress"
               rules={[
                 {
@@ -227,7 +227,7 @@ const AddEditUser = () => {
               <Input placeholder="Enter a Address !" />
             </Form.Item>
             <Form.Item
-              className="col-12 col-sm-4 col-md-4 col-lg-4"
+              className="col-12 col-sm-4 col-md-4 col-lg-3 me-2"
               name="gymboyEducation"
               rules={[
                 {
@@ -241,7 +241,7 @@ const AddEditUser = () => {
             </Form.Item>
 
             <Form.Item
-              className="col-12 col-sm-4 col-md-4 col-lg-4"
+              className="col-12 col-sm-4 col-md-4 col-lg-3 me-2"
               name="gymboyOccupation"
               rules={[
                 {
@@ -255,7 +255,7 @@ const AddEditUser = () => {
             </Form.Item>
 
             <Form.Item
-              className="col-12 col-sm-4 col-md-4 col-lg-4"
+              className="col-12 col-sm-4 col-md-4 col-lg-3 me-2"
               name="gymboyIncome"
               rules={[
                 {
@@ -269,7 +269,7 @@ const AddEditUser = () => {
             </Form.Item>
 
             <Form.Item
-              className="col-12 col-sm-4 col-md-4 col-lg-4"
+              className="col-12 col-sm-4 col-md-4 col-lg-3 me-2"
               name="gymboyMobile"
               rules={[
                 {
@@ -285,22 +285,8 @@ const AddEditUser = () => {
             >
               <Input type="number" placeholder="Enter a Mobile Number !" />
             </Form.Item>
-
             <Form.Item
-              className="col-12 col-sm-4 col-md-4 col-lg-4"
-              name="gymboyProblems"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input Problems!",
-                },
-              ]}
-              hasFeedback
-            >
-              <Input placeholder="Enter a Problems !" />
-            </Form.Item>
-            <Form.Item
-              className="col-12 col-sm-6 col-md-6 col-lg-4"
+              className="col-12 col-sm-6 col-md-6 col-lg-3 me-2"
               name={["paymentDetails", "validity"]}
               rules={[
                 {
@@ -310,10 +296,10 @@ const AddEditUser = () => {
               ]}
               hasFeedback
             >
-              <RangePicker className="col-12 col-sm-12" />
+              <RangePicker className="col-12 col-sm-12 col-md-8 col-lg-12" />
             </Form.Item>
             <Form.Item
-              className="col-12 col-sm-6 col-md-6 col-lg-4"
+              className="col-12 col-sm-6 col-md-4 col-lg-3 me-2"
               name={["paymentDetails", "fee"]}
               rules={[
                 {
@@ -324,6 +310,19 @@ const AddEditUser = () => {
               hasFeedback
             >
               <Input type="number" placeholder="Enter a fee !" />
+            </Form.Item>
+            <Form.Item
+              className="col-12 col-sm-4 col-md-12 col-lg-3 me-2"
+              name="gymboyProblems"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input Problems!",
+                },
+              ]}
+              hasFeedback
+            >
+              <Input placeholder="Enter a Problems !" />
             </Form.Item>
           </div>
           <div className="d-flex flex-column justify-content-between flex-sm-row gap-5">
@@ -479,7 +478,9 @@ const AddEditUser = () => {
             </div>
           </div>
         </div>
-        <Form.Item>
+        <Form.Item
+        className="text-center"
+        >
           <Space size="large">
             <Button type="primary" htmlType="submit">
               {location.pathname.includes("edit") ? "Update" : "Save"}
