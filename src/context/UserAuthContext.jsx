@@ -54,10 +54,10 @@ export function UserAuthContextProvider({ children }) {
   }
 
   async function addDataToFirebase(payload) {
-    payload = {
+    payload = payload.createdOn===undefined ? {
       ...payload,
       createdOn: serverTimestamp(),
-    };
+    } : payload;
     try {
       await addDoc(collection(db, "members"), payload).then((doc) =>
         console.log(`Document with ${doc.id} has been created`)

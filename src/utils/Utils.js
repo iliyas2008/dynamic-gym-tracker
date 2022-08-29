@@ -21,6 +21,45 @@ export const getErrorFirebase = (err) => {
 export const fireBaseDate = (dateTimestamp) =>
   new Date(dateTimestamp.seconds * 1000 + dateTimestamp.nanoseconds / 1000000);
 
+  export const getBloodGroupValue = (keyString) => {
+    switch (keyString) {
+      case "o_positive":
+        return "O+";
+      case "o_negative":
+        return "O-";
+      case "a_positive":
+        return "A+";
+      case "a_negative":
+        return "A-";
+      case "b_positive":
+        return "B+";
+      case "b_negative":
+        return "B-";
+      case "ab_positive":
+        return "AB+";
+      case "ab_negative":
+        return "AB-";
+      case "O+":
+        return "o_positive";
+      case "O-":
+        return "o_negative";
+      case "A+":
+        return "a_positive";
+      case "A-":
+        return "a_negative";
+      case "B+":
+        return "b_positive";
+      case "B-":
+        return "b_negative";
+      case "AB+":
+        return "ab_positive";
+      case "AB-":
+        return "ab_negative";
+      default:
+        return "Enter valid blood group !";
+    }
+  }
+
 export const daysUntilBirthday = (date) =>{
     var birthday = moment(date).format("YYYY-MM-DD");
     
