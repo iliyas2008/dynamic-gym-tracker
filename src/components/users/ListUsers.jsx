@@ -37,7 +37,19 @@ const ListUsers = () => {
       },
     });
   };
-
+const deleteAll = () => {
+  Modal.confirm({
+    icon: <ExclamationCircleOutlined />,
+    content: "Are you sure? You want to delete all?",
+    okText: "Yes",
+    okType: "danger",
+    onOk() {
+      data.forEach(d=>{
+        deleteDocFromFirebase(d.key, d.gymboyAvatar);
+      })
+    },
+  });
+}
   useEffect(() => {
     const unsub = onSnapshot(
       collection(db, "members"),
@@ -86,6 +98,7 @@ const ListUsers = () => {
       dataIndex: "gymboyId",
       sorter: (record1, record2) =>
         parseInt(record1.gymboyId) - parseInt(record2.gymboyId),
+      defaultSortOrder: "ascend",
       render: (text, record) => (
         <Link to={`${record.key}`} className="text-decoration-none text-capitalize">
           <p>{" "}{text}</p>
@@ -241,6 +254,7 @@ const ListUsers = () => {
               />
             </div>
             <div className="d-flex gap-2 flex-column flex-lg-row text-lg-end align-self-center">
+            <button onClick={deleteAll} className={`btn btn-sm ${dark? 'text-primary btn-warning' : 'btn-dark'}`}>Delete All</button>
               <ReadExcelData />
               <Link to={"add"}>
                 <button className={`btn btn-sm ${dark? 'text-primary btn-warning' : 'btn-dark'}`}>Add New Member</button>

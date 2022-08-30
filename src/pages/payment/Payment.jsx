@@ -1,5 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
+import moment from "moment";
 import { collection, onSnapshot } from "firebase/firestore";
 import { db } from "../../firebase-config";
 import { Input, Table, Modal, Avatar, Image, Form, DatePicker } from "antd";
@@ -9,7 +10,7 @@ import {
 import { Link } from "react-router-dom";
 import { useUserAuth } from "../../hooks/UseUserAuth";
 import { useDarkMode } from "../../hooks/UseDarkMode";
-import moment from "moment";
+import avatarIcon from "../../assets/avatar-icon.png"
 
 const { RangePicker } = DatePicker;
 
@@ -168,6 +169,7 @@ const Payment = () => {
       dataIndex: "gymboyId",
       sorter: (record1, record2) =>
         parseInt(record1.gymboyId) - parseInt(record2.gymboyId),
+      defaultSortOrder: "ascend",
       render: (text, record) => {
         return (
           <div className="text-primary text-capitalize">
@@ -182,7 +184,18 @@ const Payment = () => {
       title: "Avatar",
       dataIndex: "gymboyAvatar",
       render: (record, record2) => (
-        <Avatar
+        record!==null || "" ? <Avatar
+        shape="square"
+        size={{
+          xs: 24,
+          sm: 32,
+          md: 40,
+          lg: 64,
+          xl: 80,
+          xxl: 100,
+        }}
+        src={avatarIcon}
+      /> : <Avatar
           shape="square"
           size={{
             xs: 24,
