@@ -47,7 +47,7 @@ const UserDetail = () => {
   } = user;
 
   return (
-    <section>
+    user ? (<section>
       <div className="container py-2">
         <div className="row">
           <div className="col">
@@ -301,7 +301,7 @@ const UserDetail = () => {
           </div>
         </div>
       </div>
-    </section>
+    </section>) : ("Loading...")
   );
 };
 

@@ -5,6 +5,7 @@ import { CloseOutlined } from "@ant-design/icons";
 import { daysUntilBirthday, getGreetingTime } from "../../utils/Utils";
 import { useDarkMode } from "../../hooks/UseDarkMode";
 import moment from "moment";
+import defaultAvatar from "../../assets/avatar-icon.png";
 
 const Home = () => {
   const [data, setData] = useState([]);
@@ -54,11 +55,15 @@ const Home = () => {
             key={key}
           >
             <div className="avatar d-flex align-items-center">
-              <img
+            {gymboyAvatar===null || "" ? (<img
                 style={{ width: "3rem", height: "3rem", borderRadius: "50%" }}
                 src={gymboyAvatar}
                 alt={gymboyName}
-              />
+              />) : (<img
+                style={{ width: "3rem", height: "3rem", borderRadius: "50%" }}
+                src={defaultAvatar}
+                alt={gymboyName}
+              />) }
               <h3 className="mx-3 text-primary">{gymboyName}</h3>
               <button
                 className="btn btn-light btn-sm ms-auto"

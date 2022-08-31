@@ -62,11 +62,9 @@ export const fireBaseDate = (dateTimestamp) =>
 
 export const daysUntilBirthday = (date) =>{
     var birthday = moment(date).format("YYYY-MM-DD");
-    
     // uncomment this line to simulate it is your birthday and comment the next one to test it.
     // var today = moment("2017-03-25");
     var today = moment().format("YYYY-MM-DD");
-    
     // calculate age of the person
     var age = moment(today).diff(birthday, 'years');
     moment(age).format("YYYY-MM-DD");
