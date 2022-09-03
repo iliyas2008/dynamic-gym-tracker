@@ -56,6 +56,7 @@ const AddEditUser = () => {
   const onFinish = (values) => {
     values = {
       ...values,
+      activeStatus: true,
       gymboyBirthday: values.gymboyBirthday.format(),
       gymboyAvatar: imageUrl,
       paymentDetails: [{

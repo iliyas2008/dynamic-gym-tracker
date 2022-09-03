@@ -1,26 +1,38 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import moment from "moment";
 import { collection, onSnapshot } from "firebase/firestore";
-import { Input, Table, Modal, Avatar, Image } from "antd";
+import {
+  Input,
+  Table,
+  Modal,
+  Avatar,
+  Image,
+  Switch,
+  Tag,
+  Space,
+  Empty,
+} from "antd";
 import {
   ExclamationCircleOutlined,
   EyeOutlined,
   EditOutlined,
   DeleteOutlined,
+  CheckCircleOutlined,
 } from "@ant-design/icons";
 import { Link, useNavigate } from "react-router-dom";
 import { db } from "../../firebase-config";
 import { useUserAuth } from "../../hooks/UseUserAuth";
 import { useDarkMode } from "../../hooks/UseDarkMode";
 import ReadExcelData from "./ReadExcelData";
-import avatarIcon from "../../assets/avatar-icon.png"
+import defaultAvatar from "../../assets/avatar-icon.png";
+import { calculateAge } from "../../utils/Utils";
 
 const ListUsers = () => {
   const [data, setData] = useState([]);
   const [search, setSearch] = useState("");
   const [filteredData, setFilteredData] = useState([]);
-  const { deleteDocFromFirebase } = useUserAuth();
+  const [firebaseError, setFirebaseError] = useState("");
+  const { updateDataToFirebase, deleteDocFromFirebase } = useUserAuth();
   const { dark } = useDarkMode();
 
   const navigate = useNavigate();
@@ -37,19 +49,19 @@ const ListUsers = () => {
       },
     });
   };
-const deleteAll = () => {
-  Modal.confirm({
-    icon: <ExclamationCircleOutlined />,
-    content: "Are you sure? You want to delete all?",
-    okText: "Yes",
-    okType: "danger",
-    onOk() {
-      data.forEach(d=>{
-        deleteDocFromFirebase(d.key, d.gymboyAvatar);
-      })
-    },
-  });
-}
+  const deleteAll = () => {
+    Modal.confirm({
+      icon: <ExclamationCircleOutlined />,
+      content: "Are you sure? You want to delete all?",
+      okText: "Yes",
+      okType: "danger",
+      onOk: () => {
+        data.forEach(async (d) => {
+          await deleteDocFromFirebase(d.key, d.gymboyAvatar);
+        });
+      },
+    });
+  };
   useEffect(() => {
     const unsub = onSnapshot(
       collection(db, "members"),
@@ -62,7 +74,8 @@ const deleteAll = () => {
         setFilteredData(list);
       },
       (error) => {
-        console.log(error);
+        console.log("FB_ERROR:", error);
+        setFirebaseError(error);
       }
     );
 
@@ -82,26 +95,34 @@ const deleteAll = () => {
     setFilteredData(result);
   }, [search, data]);
 
-
-  const calculateAge = (entry) => {
-    const age = moment().diff(entry, 'years');
-    // console.log(age);
-  return age
-  }
-
+  
+  const switchStatus = (entry) => {
+    entry = {
+      ...entry,
+      activeStatus: !entry.activeStatus,
+    };
+    updateDataToFirebase(entry.key, entry);
+  };
   const columns = [
     {
       key: "key",
-      title: ()=>{
-        return (<p>Id<span className="d-lg-none"> / (Name)</span></p>)
+      title: () => {
+        return (
+          <p>
+            Id<span className="d-lg-none"> / (Name)</span>
+          </p>
+        );
       },
       dataIndex: "gymboyId",
       sorter: (record1, record2) =>
         parseInt(record1.gymboyId) - parseInt(record2.gymboyId),
       defaultSortOrder: "ascend",
       render: (text, record) => (
-        <Link to={`${record.key}`} className="text-decoration-none text-capitalize">
-          <p>{" "}{text}</p>
+        <Link
+          to={`${record.key}`}
+          className="text-decoration-none text-capitalize"
+        >
+          <p> {text}</p>
           <br />
           <p className="d-lg-none">{`(${record.gymboyName})`}</p>
         </Link>
@@ -110,39 +131,42 @@ const deleteAll = () => {
     {
       title: "Avatar",
       dataIndex: "gymboyAvatar",
-      render: (record, record2) => (
-        record!==null || "" ? <Avatar
-        shape="square"
-        size={{
-          xs: 24,
-          sm: 32,
-          md: 40,
-          lg: 64,
-          xl: 80,
-          xxl: 100,
-        }}
-        src={avatarIcon}
-      /> : <Avatar
-          shape="square"
-          size={{
-            xs: 24,
-            sm: 32,
-            md: 40,
-            lg: 64,
-            xl: 80,
-            xxl: 100,
-          }}
-          src={
-            <Image
-              src={record}
-              preview={{
-                mask: <EyeOutlined />,
-              }}
-              alt={`${record2.gymboyName.replace(" ", "_")}_${record2.key}`}
-            />
-          }
-        />
-      ),
+      render: (record, record2) =>
+        record !== null || "" ? (
+          <Avatar
+            shape="square"
+            size={{
+              xs: 24,
+              sm: 32,
+              md: 40,
+              lg: 64,
+              xl: 80,
+              xxl: 100,
+            }}
+            src={defaultAvatar}
+          />
+        ) : (
+          <Avatar
+            shape="square"
+            size={{
+              xs: 24,
+              sm: 32,
+              md: 40,
+              lg: 64,
+              xl: 80,
+              xxl: 100,
+            }}
+            src={
+              <Image
+                src={record}
+                preview={{
+                  mask: <EyeOutlined />,
+                }}
+                alt={`${record2.gymboyName.replace(" ", "_")}_${record2.key}`}
+              />
+            }
+          />
+        ),
       responsive: ["lg"],
     },
     {
@@ -158,8 +182,12 @@ const deleteAll = () => {
       title: "Age",
       dataIndex: "gymboyBirthday",
       filtered: true,
-      sorter: (record1, record2) => calculateAge(record1.gymboyBirthday)-calculateAge(record2.gymboyBirthday),
-      render: (record) => <div className="text-info">{calculateAge(record)}</div>,
+      sorter: (record1, record2) =>
+        calculateAge(record1.gymboyBirthday) -
+        calculateAge(record2.gymboyBirthday),
+      render: (record) => (
+        <div className="text-info">{calculateAge(record)}</div>
+      ),
       responsive: ["md"],
     },
     {
@@ -169,6 +197,48 @@ const deleteAll = () => {
         record1.gymboyAddress.localeCompare(record2.gymboyAddress),
       render: (text) => <div className="text-info text-capitalize">{text}</div>,
       responsive: ["lg"],
+    },
+    {
+      title: "Status",
+      dataIndex: "",
+      filters: [
+        {
+          text: "Active",
+          value: true,
+        },
+        {
+          text: "Inactive",
+          value: false,
+        },
+      ],
+      filterSearch: true,
+      onFilter: (value, record) => {
+        return record.activeStatus === value;
+      },
+      shouldCellUpdate: (record, prevRecord) => {
+        return record.activeStatus !== prevRecord.activeStatus;
+      },
+      render: (record) => {
+        return (
+          <div className="text-info">
+            <Space direction="vertical">
+              {record.activeStatus === true ? (
+                <Tag icon={<CheckCircleOutlined />} color="success">
+                  ACTIVE
+                </Tag>
+              ) : (
+                <Tag icon={<ExclamationCircleOutlined />} color="warning">
+                  INACTIVE
+                </Tag>
+              )}
+              <Switch
+                defaultChecked={record.activeStatus}
+                onChange={() => switchStatus(record)}
+              />
+            </Space>
+          </div>
+        );
+      },
     },
     {
       title: "Action",
@@ -227,7 +297,10 @@ const deleteAll = () => {
     <div className="container">
       <div className="row">
         <div className="col">
-          <nav aria-label="breadcrumb" className={`${dark ? 'bg-dark' : 'bg-light'} rounded-3 p-3 mb-4`}>
+          <nav
+            aria-label="breadcrumb"
+            className={`${dark ? "bg-dark" : "bg-light"} rounded-3 p-3 mb-4`}
+          >
             <ol className="breadcrumb mb-0">
               <li className="breadcrumb-item">
                 <Link to="/">Home</Link>
@@ -240,33 +313,57 @@ const deleteAll = () => {
         </div>
       </div>
       <div>
-      <Table
-        title={() => (
-          <div  className="d-flex flex-column-reverse flex-sm-row gap-4 justify-content-between">
-            <div className="text-lg-start">
-              <Input
-                name="tableDataSearch"
-                placeholder="Search here !"
-                value={search}
-                onChange={(e) => {
-                  setSearch(e.target.value);
-                }}
+        <Table
+          // loading={loading}
+          locale={{
+            emptyText: (
+              <Empty
+                image={Empty.PRESENTED_IMAGE_SIMPLE}
+                description={
+                  <span style={{ color: "red" }}>{firebaseError.message}</span>
+                }
               />
+            ),
+          }}
+          title={() => (
+            <div className="d-flex flex-column-reverse flex-sm-row gap-4 justify-content-between">
+              <div className="text-lg-start">
+                <Input
+                  name="tableDataSearch"
+                  placeholder="Search here !"
+                  value={search}
+                  onChange={(e) => {
+                    setSearch(e.target.value);
+                  }}
+                />
+              </div>
+              <div className="d-flex gap-2 flex-column flex-lg-row text-lg-end align-self-center">
+                <button
+                  onClick={deleteAll}
+                  className={`btn btn-sm ${
+                    dark ? "text-primary btn-warning" : "btn-dark"
+                  }`}
+                >
+                  Delete All
+                </button>
+                <ReadExcelData />
+                <Link to={"add"}>
+                  <button
+                    className={`btn btn-sm ${
+                      dark ? "text-primary btn-warning" : "btn-dark"
+                    }`}
+                  >
+                    Add New Member
+                  </button>
+                </Link>
+              </div>
             </div>
-            <div className="d-flex gap-2 flex-column flex-lg-row text-lg-end align-self-center">
-            <button onClick={deleteAll} className={`btn btn-sm ${dark? 'text-primary btn-warning' : 'btn-dark'}`}>Delete All</button>
-              <ReadExcelData />
-              <Link to={"add"}>
-                <button className={`btn btn-sm ${dark? 'text-primary btn-warning' : 'btn-dark'}`}>Add New Member</button>
-              </Link>
-            </div>
-          </div>
-        )}
-        columns={columns}
-        dataSource={filteredData}
-        bordered
-        sticky
-      />
+          )}
+          columns={columns}
+          dataSource={filteredData}
+          bordered
+          sticky
+        />
       </div>
     </div>
   );

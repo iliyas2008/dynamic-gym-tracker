@@ -15,10 +15,11 @@ const ReadExcelData = () => {
     let feetVal = feetString.split("'")[0];
     let inchVal = feetString.split("'")[1];
     let totalInches = parseInt(feetVal) * 12 + parseInt(inchVal);
-    const cmVal = (totalInches * 2.54).toFixed(2).toString()
-    console.log(cmVal);
+    let cmVal = (totalInches * 2.54).toFixed(2).toString()
+    if(isNaN(cmVal)) cmVal=0
     return cmVal;
   };
+  
   const xslToJson = (workbook) => {
     //var data = [];
     var sheet_name_list = workbook.SheetNames[0];
@@ -83,30 +84,32 @@ const ReadExcelData = () => {
       });
       changedArr.sort((a,b) => parseInt(a.gymboyId) - parseInt(b.gymboyId))
       setSheetArr(changedArr);
-      // let finalData = []
-
-      changedArr.forEach(async (data) => {
+      changedArr.forEach(async (data, index, array) => {
         // console.log("data rows ", data)
         const memberQuery = query(collection(db, "members"), where("gymboyId", "==", data.gymboyId));
-
-        const querySnapshot = await getDocs(memberQuery);
-        if(querySnapshot.length > 0){
-          querySnapshot.forEach((doc) => {
-            // doc.data() is never undefined for query doc snapshots
-            console.log(doc.id, " => ", doc.data());
-            updateDataToFirebase(doc.id, data)
+        const querySnapshot = await getDocs(memberQuery)
+        if(querySnapshot.size > 0){
+          querySnapshot.forEach(async (doc) => {
+            // console.log(doc.id, " => ", doc.data());
+              await updateDataToFirebase(doc.id, data)
           });
-          
         }else{
-          addDataToFirebase(data);
-        }
-      });
-      // this.setState({ DataEESSsend: finalData })
-      // console.log("finalData ", finalData)
+          data = {
+            ...data,
+            activeStatus: true,
+          }
+          await addDataToFirebase(data);
+        } 
+        // if (Object.is(array.length - 1, index)) {
+        //   // execute last item logic
+        //   console.log("Successfully Imported.");    
+        // }
+      })
     };
 
     if (rABS) reader.readAsBinaryString(file);
     else reader.readAsArrayBuffer(file);
+    
   };
 
   const handleChange = (e) => {
@@ -115,7 +118,6 @@ const ReadExcelData = () => {
       handleFile(files[0]);
     }
   };
-  console.log("arr ", sheetArr);
 
   return (
     <label

@@ -101,3 +101,9 @@ export const getGreetingTime = (currentTime) => {
   // Between dawn and noon
   return 'Good morning';
 }
+
+export const calculateAge = (entry) => {
+  const age = moment().diff(entry, "years");
+  // console.log(age);
+  return age;
+};
