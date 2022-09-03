@@ -220,7 +220,7 @@ const Home = () => {
           </div>
         );
       })}
-      <Table showHeader title={() => (<div className="h4 text-primary">Recent Joinees</div>)} className="m-2" dataSource={getRecentJoinees(data)} columns={columns} size="small" pagination={false} />;
+      <Table showHeader title={() => (<div className="h4 text-primary">Recent Joinees</div>)} className="m-2" dataSource={getRecentJoinees(data)} columns={columns} size="small" pagination={false} />
     </div>
   );
 };
