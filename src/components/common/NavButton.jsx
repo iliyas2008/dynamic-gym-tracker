@@ -10,14 +10,15 @@ const NavButton = ({
   disabled
 }) => (
   <Tooltip placement="bottom" title={title}>
-    <Badge style={{top: "1.2rem", right: "1rem"}} count={badgeCount}>
+    <Badge style={{top: "1.2rem", right: ".25rem"}} count={badgeCount}>
       <Avatar
         onClick={() => disabled && customFunc()}
         style={{
           backgroundColor: bgColor,
           color,
           top: "0.5rem",
-          cursor: "pointer"
+          cursor: "pointer",
+          margin: 0
         }}
         shape="circle"
         size="large"

@@ -16,7 +16,7 @@ import {
 
 const SideMenu = ({ collapsed, toggleCollapsed }) => {
   const { logOut, user } = useUserAuth();
-  const { theme } = useDarkMode();
+  const { theme, dark } = useDarkMode();
   const { Sider } = Layout;
 
   let navigate = useNavigate();
@@ -93,12 +93,13 @@ const SideMenu = ({ collapsed, toggleCollapsed }) => {
       collapsible
       collapsed={collapsed}
       breakpoint="md"
-      collapsedWidth="32"
+      collapsedWidth="3rem"
       onBreakpoint={(broken) => {
         // console.log(broken);
       }}
       onCollapse={toggleCollapsed}
       style={{
+        position: "fixed",
         backgroundColor: theme.backgroundColor,
         color: theme.color,
         marginTop:"6rem"
@@ -106,10 +107,7 @@ const SideMenu = ({ collapsed, toggleCollapsed }) => {
     >
       {/* <div  className="logo text-white d-flex justify-content-center align-items-center">{collapsed? "": "Dynamic Gym"}</div> */}
       <AntMenu
-        style={{
-          backgroundColor: theme.backgroundColor,
-          color: theme.color,
-        }}
+        theme={dark? "dark" : "light"}
         defaultSelectedKeys={["/"]}
         selectedKeys={[location.pathname]}
         items={HOME_SIDER_MENU_LIST}

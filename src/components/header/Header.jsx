@@ -1,6 +1,7 @@
 import React from "react";
-import { PageHeader } from "antd";
+import { PageHeader, Space } from "antd";
 import { RiCake2Fill } from "react-icons/ri";
+import { MenuUnfoldOutlined, MenuFoldOutlined } from "@ant-design/icons";
 import { useUserAuth } from "../../hooks/UseUserAuth";
 import { useDarkMode } from "../../hooks/UseDarkMode";
 import { UseStateContext } from "../../hooks/UseStateContext";
@@ -8,8 +9,8 @@ import NavButton from "../common/NavButton";
 import Notification from "../notification/Notification";
 import logo from "../../assets/gymlogo.jpg"
 
-const Header = () => {
-  const { dark, theme } = useDarkMode();
+const Header = ({collapsed, setCollapsed}) => {
+  const { dark } = useDarkMode();
   const { handleClick, bdayPeople, isClicked } = UseStateContext();
   const { user } = useUserAuth();
 
@@ -20,11 +21,18 @@ const Header = () => {
           position: "fixed",
           zIndex: 1,
           width: "100%",
-          padding: ".75rem",
-          backgroundColor: theme.backgroundColor
+          padding: "1rem",
+          height: "6rem"
         }}
-        className="site-page-header-responsive"
+        ghost={false}
+        backIcon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+        onBack={() => setCollapsed(!collapsed)}
         title={
+          <Space
+          direction="vertical"
+          size={0}
+          style={{marginLeft:".5rem"}}
+          >
           <span
             style={{
               color: "blue",
@@ -32,8 +40,16 @@ const Header = () => {
           >
             Dynamic Gym Tracker
           </span>
+          <span
+            style={{
+              color: "grey",
+              fontSize:"smaller",
+            }}
+            >
+              Pondicherry
+            </span>
+          </Space>
         }
-        subTitle="Pondicherry"
         avatar={{
           src: logo,
         }}
