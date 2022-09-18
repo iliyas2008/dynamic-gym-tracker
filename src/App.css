@@ -22,3 +22,6 @@
   align-items: center;
   text-align: center;
 }
+.ant-page-header-heading-extra{
+  margin-left: auto !important;
+}

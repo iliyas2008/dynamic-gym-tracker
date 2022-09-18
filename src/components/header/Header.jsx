@@ -1,47 +1,67 @@
 import React from "react";
-import { Layout, Typography } from "antd";
-import { BsBrightnessHighFill, BsBrightnessHigh } from "react-icons/bs";
-import { AiOutlineMenuUnfold, AiOutlineMenuFold } from "react-icons/ai";
+import { PageHeader } from "antd";
+import { RiCake2Fill } from "react-icons/ri";
 import { useUserAuth } from "../../hooks/UseUserAuth";
 import { useDarkMode } from "../../hooks/UseDarkMode";
+import { UseStateContext } from "../../hooks/UseStateContext";
+import NavButton from "../common/NavButton";
+import Notification from "../notification/Notification";
+import logo from "../../assets/gymlogo.jpg"
 
-const Header = ({ collapsed, setCollapsed }) => {
-  const { theme, toggleDarkMode, dark } = useDarkMode()
-  const { Header } = Layout;
-  const { Title } = Typography;
+const Header = () => {
+  const { dark, theme } = useDarkMode();
+  const { handleClick, bdayPeople, isClicked } = UseStateContext();
   const { user } = useUserAuth();
-  
+
   return (
-    <Header
-      style={{
-        backgroundColor: theme.backgroundColor,
-        color: theme.color
-      }}
-    >
-      <div className="d-flex">
-        <Title
-          style={{ marginInline: "auto" }}
-          className="text-primary d-flex justify-content-center align-items-center"
-          level={3}
-        >
-          Dynamic Gym Tracker
-        </Title>
-        <div className="trigger" onClick={() => toggleDarkMode()}>
-          {user && dark ? (
-            <BsBrightnessHigh color="orange" />
-          ) : (
-            <BsBrightnessHighFill color="orange" />
-          )}
-        </div>
-        <div className={`${user ? 'd-none d-sm-block' : 'd-none'} trigger`} onClick={() => setCollapsed(!collapsed)}>
-          {collapsed ? (
-            <AiOutlineMenuUnfold color="orange" />
-          ) : (
-            <AiOutlineMenuFold color="orange" />
-          )}
-        </div>
-      </div>
-    </Header>
+    <>
+      <PageHeader
+        style={{
+          position: "fixed",
+          zIndex: 1,
+          width: "100%",
+          padding: ".75rem",
+          backgroundColor: theme.backgroundColor
+        }}
+        className="site-page-header-responsive"
+        title={
+          <span
+            style={{
+              color: "blue",
+            }}
+          >
+            Dynamic Gym Tracker
+          </span>
+        }
+        subTitle="Pondicherry"
+        avatar={{
+          src: logo,
+        }}
+        extra={
+          <>
+          {(user && bdayPeople.length > 0) && (
+                <NavButton
+                  title="Birthdays"
+                  badgeCount={bdayPeople.length}
+                  customFunc={() => handleClick("notification", true)}
+                  color="orange"
+                  bgColor={dark ? "black" : "white"}
+                  icon={<RiCake2Fill />}
+                  disabled={bdayPeople.length > 0 ? true : false}
+                />
+              )}
+              {isClicked.notification && (
+                <Notification
+                  notificationData={bdayPeople}
+                  onclick={() =>
+                    bdayPeople.length > 0 && handleClick("notification", false)
+                  }
+                />
+              )}
+          </>
+        }
+      />
+    </>
   );
 };
 

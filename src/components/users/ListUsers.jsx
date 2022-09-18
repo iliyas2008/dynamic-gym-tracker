@@ -1,6 +1,5 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { collection, onSnapshot } from "firebase/firestore";
 import {
   Input,
   Table,
@@ -20,19 +19,18 @@ import {
   CheckCircleOutlined,
 } from "@ant-design/icons";
 import { Link, useNavigate } from "react-router-dom";
-import { db } from "../../firebase-config";
 import { useUserAuth } from "../../hooks/UseUserAuth";
 import { useDarkMode } from "../../hooks/UseDarkMode";
+import { UseStateContext } from "../../hooks/UseStateContext";
 import ReadExcelData from "./ReadExcelData";
 import defaultAvatar from "../../assets/avatar-icon.png";
 import { calculateAge } from "../../utils/Utils";
 
 const ListUsers = () => {
-  const [data, setData] = useState([]);
   const [search, setSearch] = useState("");
   const [filteredData, setFilteredData] = useState([]);
-  const [firebaseError, setFirebaseError] = useState("");
   const { updateDataToFirebase, deleteDocFromFirebase } = useUserAuth();
+  const { data } = UseStateContext()
   const { dark } = useDarkMode();
 
   const navigate = useNavigate();
@@ -62,29 +60,9 @@ const ListUsers = () => {
       },
     });
   };
+  
   useEffect(() => {
-    const unsub = onSnapshot(
-      collection(db, "members"),
-      (snapShot) => {
-        let list = [];
-        snapShot.docs.forEach((doc) => {
-          list.push({ key: doc.id, ...doc.data() });
-        });
-        setData(list);
-        setFilteredData(list);
-      },
-      (error) => {
-        console.log("FB_ERROR:", error);
-        setFirebaseError(error);
-      }
-    );
-
-    return () => {
-      unsub();
-    };
-  }, []);
-
-  useEffect(() => {
+    setFilteredData(data);
     const result = data.filter((datum) => {
       return (
         datum.gymboyName.toLowerCase().match(search.toLowerCase()) ||
@@ -319,9 +297,6 @@ const ListUsers = () => {
             emptyText: (
               <Empty
                 image={Empty.PRESENTED_IMAGE_SIMPLE}
-                description={
-                  <span style={{ color: "red" }}>{firebaseError.message}</span>
-                }
               />
             ),
           }}

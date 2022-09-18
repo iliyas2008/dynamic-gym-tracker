@@ -4,6 +4,7 @@ import Home from "../pages/home/Home";
 import Login from "../pages/login/Login";
 import Payment from "../pages/payment/Payment";
 import Timing from "../pages/timing/Timing";
+import CalendarView from "../pages/calendar/CalendarView";
 import Users from "../pages/users/Users";
 import AddEditUser from "../components/users/AddEditUser";
 import ListUsers from "../components/users/ListUsers";
@@ -74,6 +75,14 @@ const MyRoutes = () => {
             element={
               <ProtectedRoute>
                 <Timing />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="calendar"
+            element={
+              <ProtectedRoute>
+                <CalendarView />
               </ProtectedRoute>
             }
           />
