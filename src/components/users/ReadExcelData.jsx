@@ -118,7 +118,7 @@ const ReadExcelData = () => {
       handleFile(files[0]);
     }
   };
-
+console.log(sheetArr);
   return (
     <label
       htmlFor="my-file-selector"
