@@ -13,9 +13,9 @@ const Notification = ({ notificationData, onclick }) => {
       style={{
         backgroundColor: `${dark ? "#f9fafd" : "#42464D"}`,
         width: "15rem",
-        zIndex: 1000,
+        zIndex: 9999999,
         right: "4rem",
-        top: "12rem",
+        top: "6rem",
       }}
     >
       <div className="d-flex flex-column gap-3 m-2">

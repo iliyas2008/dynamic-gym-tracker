@@ -22,3 +22,6 @@
   align-items: center;
   text-align: center;
 }
+.ant-table-sticky-holder, .ant-table-sticky-scroll{
+  z-index: auto !important;
+}

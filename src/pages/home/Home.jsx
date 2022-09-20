@@ -96,7 +96,7 @@ const Home = () => {
       <h2 style={{ color: `${theme.color}` }}>
         {getGreetingTime(moment())} friends !
       </h2>
-      <div className="site-card-wrapper mb-3" style={{zIndex:-999}}>
+      <div className="site-card-wrapper mb-3">
         <Row gutter={[16, 24]}>
           <Col xs={24} lg={8}>
             <Card

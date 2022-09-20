@@ -1,6 +1,6 @@
 import { useState } from "react";
 import cn from "classnames";
-import { MdAdd } from "react-icons/md";
+import { MdOutlineFormatColorFill } from "react-icons/md";
 
 import "./styles.scss";
 
@@ -8,19 +8,22 @@ const FAB = ({ actions }) => {
   const [open, setOpen] = useState(false);
 
   // Set open state to true if user hover over "ul" element 
-  const mouseEnter = () => setOpen(true);
+  // const mouseEnter = () => setOpen(true);
 
   // Set open state to false if user hover out of "ul" element 
-  const mouseLeave = () => setOpen(false);
+  // const mouseLeave = () => setOpen(false);
+
+  const toggleFAB = () => setOpen(!open)
 
   return (
     <ul
       className="fab-container"
-      onMouseEnter={mouseEnter}
-      onMouseLeave={mouseLeave}
+      onClick={toggleFAB}
+      // onMouseEnter={mouseEnter}
+      // onMouseLeave={mouseLeave}
     >
       <li className="fab-button">
-        <MdAdd />
+        <MdOutlineFormatColorFill />
       </li>
       {actions.map((action, index) => (
         <li
